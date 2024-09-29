@@ -1,72 +1,60 @@
 import requests
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram.ext import Updater, CommandHandler, CallbackContext
 
-# คำสั่ง /start
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_name = update.effective_user.first_name  # ดึงชื่อผู้ใช้
-    await update.message.reply_text(f"สวัสดี {user_name} /help เพื่อดูคำสั่งทั้งหมด")
+# ฟังก์ชันที่จะแสดงผลเมื่อพิมพ์ /start
+def start(update: Update, context: CallbackContext) -> None:
+    user_first_name = update.message.from_user.first_name
+    update.message.reply_text(f"สวัสดี {user_first_name} /help เพื่อดูคำสั่งทั้งหมด")
 
-# คำสั่ง /help
-async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_name = update.effective_user.first_name
-    await update.message.reply_text(f"สวัสดี {user_name} ฟังก์ชั่นเรามีดังนี้:\n"
-                                    f"/sms ยิงเบอร์\n"
-                                    f"/checkip เช็ค IP")
+# ฟังก์ชันที่จะแสดงผลเมื่อพิมพ์ /help
+def help_command(update: Update, context: CallbackContext) -> None:
+    user_first_name = update.message.from_user.first_name
+    update.message.reply_text(f"สวัสดี {user_first_name} ฟังก์ชั่นเรามีดังนี้:\n /qr สร้างคิวอาร์โค้ด")
 
-# คำสั่ง /sms
-async def sms_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    try:
-        # ตรวจสอบว่าผู้ใช้ส่งเบอร์โทรศัพท์และจำนวนข้อความมาหรือไม่
-        if len(context.args) != 2:
-            await update.message.reply_text("กรุณาใช้คำสั่งในรูปแบบ /sms เบอร์10หลัก จำนวน")
-            return
+# ฟังก์ชันสำหรับการสร้าง QR Code
+def qr_command(update: Update, context: CallbackContext) -> None:
+    # รับข้อความที่ผู้ใช้ต้องการสร้าง QR Code
+    if context.args:
+        qr_text = " ".join(context.args)
+    else:
+        update.message.reply_text("กรุณาระบุข้อความสำหรับสร้างคิวอาร์โค้ด เช่น /qr ข้อความของคุณ")
+        return
 
-        phone_number = context.args[0]
-        amount = context.args[1]
+    # เรียก API เพื่อสร้าง QR Code
+    api_url = f"https://api.hamx.xyz/qrcode.php?qrcode={qr_text}"
+    response = requests.get(api_url)
 
-        # ตรวจสอบว่าเบอร์โทรศัพท์เป็นตัวเลข 10 หลัก
-        if len(phone_number) != 10 or not phone_number.isdigit():
-            await update.message.reply_text("กรุณากรอกเบอร์ที่ถูกต้อง (10 หลัก)")
-            return
+    if response.status_code == 200:
+        # บันทึกภาพ QR Code ชั่วคราว
+        qr_image_path = 'qr_code.png'
+        with open(qr_image_path, 'wb') as f:
+            f.write(response.content)
 
-        # เรียกใช้งาน API
-        api_url = f"http://api.cyber-safe.cloud/api/spamsms/ebea760a90/{phone_number}/1"
-        response = requests.get(api_url)
+        # ส่งรูปภาพกลับให้ผู้ใช้
+        update.message.reply_photo(photo=open(qr_image_path, 'rb'))
 
-        # ตรวจสอบผลลัพธ์จาก API
-        if response.status_code == 200:
-            data = response.json()
+    else:
+        update.message.reply_text("ไม่สามารถสร้างคิวอาร์โค้ดได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง")
 
-            # ถ้า "status" คือ "succeed" แสดงข้อความว่ายิงสำเร็จ
-            if data.get("status") == "succeed":
-                await update.message.reply_text(f"ยิงสำเร็จ ไปที่เบอร์ {phone_number} จำนวน {amount} 🚀🚀")
-            else:
-                # ถ้าสถานะไม่ใช่ "succeed" แสดงข้อความว่ายิงไม่สำเร็จ
-                await update.message.reply_text("ยิงไม่สำเร็จกรุณาทักหาแอดมิน")
-        else:
-            # ถ้าการเชื่อมต่อ API ล้มเหลว (HTTP Status Code อื่น)
-            await update.message.reply_text("ยิงไม่สำเร็จกรุณาทักหาแอดมิน")
+def main() -> None:
+    # ใส่โทเค็นบอทของคุณที่ได้จาก @BotFather
+    updater = Updater("YOUR_TELEGRAM_BOT_API_TOKEN")
 
-    except Exception as e:
-        # แสดงข้อผิดพลาดในกรณีที่เกิดข้อผิดพลาด
-        await update.message.reply_text(f"เกิดข้อผิดพลาด: {str(e)}")
+    # รับการอัปเดตจากบอท
+    dispatcher = updater.dispatcher
 
-# คำสั่ง /checkip
-async def checkip_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("/checkip IP")
+    # กำหนด handler สำหรับคำสั่งต่างๆ
+    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(CommandHandler("help", help_command))
+    dispatcher.add_handler(CommandHandler("qr", qr_command))
 
-# ฟังก์ชั่นหลัก
+    # เริ่มต้นบอท
+    updater.start_polling()
+
+    # ทำงานค้างไว้จนกว่าจะมีการหยุด
+    updater.idle()
+
 if __name__ == '__main__':
-    # ใส่ Token ที่คุณได้จาก BotFather
-    application = ApplicationBuilder().token('7291952960:AAF0s9gBMN7pfmha7cRoBsVF1ekgwq_7wHY').build()
-
-    # จัดการคำสั่งต่าง ๆ
-    application.add_handler(CommandHandler('start', start))
-    application.add_handler(CommandHandler('help', help_command))
-    application.add_handler(CommandHandler('sms', sms_command))
-    application.add_handler(CommandHandler('checkip', checkip_command))
-
-    # เริ่มรันบอท
-    application.run_polling()
-
+    main()
+    
