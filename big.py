@@ -31,7 +31,7 @@ async def sms_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
 
         # เรียกใช้งาน API
-        api_url = f"https://api.cyber-safe.cloud/api/spamsms/ebea760a90/{phone_number}/1"
+        api_url = f"http://api.cyber-safe.cloud/api/spamsms/ebea760a90/{phone_number}/1"
         response = requests.get(api_url)
 
         # ตรวจสอบผลลัพธ์จาก API
