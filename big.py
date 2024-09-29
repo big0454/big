@@ -39,7 +39,7 @@ def qr_command(update: Update, context: CallbackContext) -> None:
 
 def main() -> None:
     # ใส่โทเค็นบอทของคุณที่ได้จาก @BotFather
-    updater = Updater("YOUR_TELEGRAM_BOT_API_TOKEN")
+    updater = Updater("7291952960:AAF0s9gBMN7pfmha7cRoBsVF1ekgwq_7wHY")
 
     # รับการอัปเดตจากบอท
     dispatcher = updater.dispatcher
