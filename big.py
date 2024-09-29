@@ -121,7 +121,7 @@ async def ngl_command(update: Update, context) -> None:
 # Main function
 def main() -> None:
     # Load token from environment variable
-    token = os.getenv("TELEGRAM_BOT_TOKEN")
+    token = os.getenv("7291952960:AAF0s9gBMN7pfmha7cRoBsVF1ekgwq_7wHY")
     if not token:
         logger.error("Bot token not found!")
         return
