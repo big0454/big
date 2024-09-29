@@ -59,7 +59,7 @@ async def checkip_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ฟังก์ชั่นหลัก
 if __name__ == '__main__':
     # ใส่ Token ที่คุณได้จาก BotFather
-    application = ApplicationBuilder().token('YOUR_TELEGRAM_BOT_TOKEN').build()
+    application = ApplicationBuilder().token('7291952960:AAF0s9gBMN7pfmha7cRoBsVF1ekgwq_7wHY').build()
 
     # จัดการคำสั่งต่าง ๆ
     application.add_handler(CommandHandler('start', start))
