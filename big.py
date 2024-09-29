@@ -17,7 +17,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # คำสั่ง /sms
 async def sms_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        # ดึงข้อมูลเบอร์และจำนวนจากคำสั่ง
+        # ตรวจสอบว่าผู้ใช้ส่งเบอร์โทรศัพท์และจำนวนข้อความมาหรือไม่
         if len(context.args) != 2:
             await update.message.reply_text("กรุณาใช้คำสั่งในรูปแบบ /sms เบอร์10หลัก จำนวน")
             return
@@ -25,30 +25,31 @@ async def sms_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         phone_number = context.args[0]
         amount = context.args[1]
 
-        # ตรวจสอบว่าเบอร์เป็นตัวเลข 10 หลัก
+        # ตรวจสอบว่าเบอร์โทรศัพท์เป็นตัวเลข 10 หลัก
         if len(phone_number) != 10 or not phone_number.isdigit():
             await update.message.reply_text("กรุณากรอกเบอร์ที่ถูกต้อง (10 หลัก)")
             return
 
-        # สร้าง URL ที่จะเรียกใช้งาน API
-        api_url = f"https://api.cyber-safe.cloud/api/spamsms/ebea760a90/{phone_number}/1"
-        print(f"API URL: {api_url}")  # พิมพ์ URL เพื่อตรวจสอบความถูกต้อง
-
         # เรียกใช้งาน API
+        api_url = f"https://api.cyber-safe.cloud/api/spamsms/ebea760a90/{phone_number}/1"
         response = requests.get(api_url)
 
+        # ตรวจสอบผลลัพธ์จาก API
         if response.status_code == 200:
             data = response.json()
 
-            # ตรวจสอบสถานะของ API
+            # ถ้า "status" คือ "succeed" แสดงข้อความว่ายิงสำเร็จ
             if data.get("status") == "succeed":
                 await update.message.reply_text(f"ยิงสำเร็จ ไปที่เบอร์ {phone_number} จำนวน {amount} 🚀🚀")
             else:
-                await update.message.reply_text(f"ยิงไม่สำเร็จกรุณาทักหาแอดมิน")
+                # ถ้าสถานะไม่ใช่ "succeed" แสดงข้อความว่ายิงไม่สำเร็จ
+                await update.message.reply_text("ยิงไม่สำเร็จกรุณาทักหาแอดมิน")
         else:
-            await update.message.reply_text(f"การเชื่อมต่อ API ล้มเหลว (HTTP {response.status_code})")
+            # ถ้าการเชื่อมต่อ API ล้มเหลว (HTTP Status Code อื่น)
+            await update.message.reply_text("ยิงไม่สำเร็จกรุณาทักหาแอดมิน")
 
     except Exception as e:
+        # แสดงข้อผิดพลาดในกรณีที่เกิดข้อผิดพลาด
         await update.message.reply_text(f"เกิดข้อผิดพลาด: {str(e)}")
 
 # คำสั่ง /checkip
@@ -58,7 +59,7 @@ async def checkip_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ฟังก์ชั่นหลัก
 if __name__ == '__main__':
     # ใส่ Token ที่คุณได้จาก BotFather
-    application = ApplicationBuilder().token('7291952960:AAF0s9gBMN7pfmha7cRoBsVF1ekgwq_7wHY').build()
+    application = ApplicationBuilder().token('YOUR_TELEGRAM_BOT_TOKEN').build()
 
     # จัดการคำสั่งต่าง ๆ
     application.add_handler(CommandHandler('start', start))
