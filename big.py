@@ -39,7 +39,7 @@ async def qr_command(update: Update, context) -> None:
 
 def main() -> None:
     # ใส่โทเค็นบอทของคุณที่ได้จาก @BotFather
-    application = Application.builder().token("YOUR_TELEGRAM_BOT_API_TOKEN").build()
+    application = Application.builder().token("7291952960:AAF0s9gBMN7pfmha7cRoBsVF1ekgwq_7wHY").build()
 
     # กำหนด handler สำหรับคำสั่งต่างๆ
     application.add_handler(CommandHandler("start", start))
