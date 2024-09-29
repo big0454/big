@@ -20,7 +20,7 @@ async def help_command(update: Update, context) -> None:
         f"สวัสดี {user_first_name} ฟังก์ชั่นเรามีดังนี้:\n"
         "/qr สร้างคิวอาร์โค้ด\n"
         "/check ตรวจสอบที่อยู่จาก IP (ไม่แน่นอน 100%)\n"
-        "/ngl สแปมngl\n"
+        "/ngl สแปม NGL\n"
         "ADMIN @BIG554"
     )
     await update.message.reply_text(help_message)
@@ -59,7 +59,7 @@ async def check_command(update: Update, context) -> None:
     ip_address = context.args[0]
     await update.message.reply_text("รอสักครู่กำลังเช็ค IP...")
 
-    api_url = f"https://ipinfo.io/{ip_address}/json?token=16dd0fbb0567d6"
+    api_url = f"https://ipinfo.io/{ip_address}/json?token=YOUR_TOKEN_HERE"
     try:
         response = requests.get(api_url)
         if response.status_code == 200:
@@ -121,7 +121,7 @@ async def ngl_command(update: Update, context) -> None:
 # Main function
 def main() -> None:
     # Load token from environment variable
-    token = os.getenv("7291952960:AAF0s9gBMN7pfmha7cRoBsVF1ekgwq_7wHY")
+    token = os.getenv("TELEGRAM_BOT_TOKEN")
     if not token:
         logger.error("Bot token not found!")
         return
