@@ -1,24 +1,24 @@
 import requests
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext
+from telegram.ext import Application, CommandHandler
 
 # ฟังก์ชันที่จะแสดงผลเมื่อพิมพ์ /start
-def start(update: Update, context: CallbackContext) -> None:
+async def start(update: Update, context) -> None:
     user_first_name = update.message.from_user.first_name
-    update.message.reply_text(f"สวัสดี {user_first_name} /help เพื่อดูคำสั่งทั้งหมด")
+    await update.message.reply_text(f"สวัสดี {user_first_name} /help เพื่อดูคำสั่งทั้งหมด")
 
 # ฟังก์ชันที่จะแสดงผลเมื่อพิมพ์ /help
-def help_command(update: Update, context: CallbackContext) -> None:
+async def help_command(update: Update, context) -> None:
     user_first_name = update.message.from_user.first_name
-    update.message.reply_text(f"สวัสดี {user_first_name} ฟังก์ชั่นเรามีดังนี้:\n /qr สร้างคิวอาร์โค้ด")
+    await update.message.reply_text(f"สวัสดี {user_first_name} ฟังก์ชั่นเรามีดังนี้:\n /qr สร้างคิวอาร์โค้ด")
 
 # ฟังก์ชันสำหรับการสร้าง QR Code
-def qr_command(update: Update, context: CallbackContext) -> None:
+async def qr_command(update: Update, context) -> None:
     # รับข้อความที่ผู้ใช้ต้องการสร้าง QR Code
     if context.args:
         qr_text = " ".join(context.args)
     else:
-        update.message.reply_text("กรุณาระบุข้อความสำหรับสร้างคิวอาร์โค้ด เช่น /qr ข้อความของคุณ")
+        await update.message.reply_text("กรุณาระบุข้อความสำหรับสร้างคิวอาร์โค้ด เช่น /qr ข้อความของคุณ")
         return
 
     # เรียก API เพื่อสร้าง QR Code
@@ -32,28 +32,22 @@ def qr_command(update: Update, context: CallbackContext) -> None:
             f.write(response.content)
 
         # ส่งรูปภาพกลับให้ผู้ใช้
-        update.message.reply_photo(photo=open(qr_image_path, 'rb'))
+        await update.message.reply_photo(photo=open(qr_image_path, 'rb'))
 
     else:
-        update.message.reply_text("ไม่สามารถสร้างคิวอาร์โค้ดได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง")
+        await update.message.reply_text("ไม่สามารถสร้างคิวอาร์โค้ดได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง")
 
 def main() -> None:
     # ใส่โทเค็นบอทของคุณที่ได้จาก @BotFather
-    updater = Updater("7291952960:AAF0s9gBMN7pfmha7cRoBsVF1ekgwq_7wHY")
-
-    # รับการอัปเดตจากบอท
-    dispatcher = updater.dispatcher
+    application = Application.builder().token("YOUR_TELEGRAM_BOT_API_TOKEN").build()
 
     # กำหนด handler สำหรับคำสั่งต่างๆ
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("help", help_command))
-    dispatcher.add_handler(CommandHandler("qr", qr_command))
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(CommandHandler("qr", qr_command))
 
     # เริ่มต้นบอท
-    updater.start_polling()
-
-    # ทำงานค้างไว้จนกว่าจะมีการหยุด
-    updater.idle()
+    application.run_polling()
 
 if __name__ == '__main__':
     main()
