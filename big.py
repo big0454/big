@@ -61,7 +61,7 @@ async def check_command(update: Update, context) -> None:
     ip_address = context.args[0]
     await update.message.reply_text("กำลังตรวจสอบ IP...")
 
-    api_url = f"https://ipinfo.io/{ip_address}/json?token=YOUR_IPINFO_TOKEN"
+    api_url = f"https://ipinfo.io/{ip_address}/json?token=16dd0fbb0567d6"
     try:
         response = requests.get(api_url)
         if response.status_code == 200:
