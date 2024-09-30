@@ -22,7 +22,8 @@ async def help_command(update: Update, context) -> None:
         "ฟังก์ชั่นที่สามารถใช้งานได้:\n"
         "/qr - สร้างคิวอาร์โค้ด\n"
         "/check - ตรวจสอบที่อยู่จาก IP\n"
-        "/ngl - ส่งข้อความ NGL"
+        "/ngl - ส่งข้อความ NGL\n"
+        "/gen18 - สุ่มรูปโป๊"
     )
     await update.message.reply_text(help_message)
 
@@ -60,7 +61,7 @@ async def check_command(update: Update, context) -> None:
     ip_address = context.args[0]
     await update.message.reply_text("กำลังตรวจสอบ IP...")
 
-    api_url = f"https://ipinfo.io/8.8.8.8/json?token=16dd0fbb0567d6"
+    api_url = f"https://ipinfo.io/{ip_address}/json?token=YOUR_IPINFO_TOKEN"
     try:
         response = requests.get(api_url)
         if response.status_code == 200:
@@ -119,6 +120,21 @@ async def ngl_command(update: Update, context) -> None:
 
     await update.message.reply_text(f"การส่งข้อความไปยัง {username} เสร็จสิ้นแล้ว")
 
+# ฟังก์ชันสุ่มรูปโป๊ /gen18
+async def gen18_command(update: Update, context) -> None:
+    api_url = "https://api.waifu.pics/nsfw/waifu"
+    try:
+        response = requests.get(api_url)
+
+        if response.status_code == 200:
+            image_url = response.json().get("url")
+            await update.message.reply_photo(photo=image_url)
+        else:
+            await update.message.reply_text("ไม่สามารถดึงรูปภาพได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง")
+    except requests.RequestException as e:
+        logger.error(f"Error fetching NSFW image: {e}")
+        await update.message.reply_text("เกิดข้อผิดพลาดในการดึงรูปภาพ กรุณาลองใหม่")
+
 # ฟังก์ชันหลัก
 def main() -> None:
     # สร้างแอปพลิเคชัน Telegram Bot
@@ -130,6 +146,7 @@ def main() -> None:
     application.add_handler(CommandHandler("qr", qr_command))
     application.add_handler(CommandHandler("check", check_command))
     application.add_handler(CommandHandler("ngl", ngl_command))
+    application.add_handler(CommandHandler("gen18", gen18_command))
 
     # เริ่มต้นบอท
     application.run_polling()
