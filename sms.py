@@ -264,7 +264,7 @@ def sms_command(update: Update, context: CallbackContext):
 
 # ฟังก์ชันหลักสำหรับบอท
 def main():
-    updater = Updater("YOUR_TELEGRAM_BOT_TOKEN", use_context=True)
+    updater = Updater("7291952960:AAF0s9gBMN7pfmha7cRoBsVF1ekgwq_7wHY", use_context=True)
     dispatcher = updater.dispatcher
 
     # เพิ่มคำสั่ง /sms
